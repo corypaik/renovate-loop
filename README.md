@@ -4,34 +4,23 @@ This repository contains a minimal reproduction of an infinite loop issue betwee
 
 ## Overview
 
-Not all files are relevant as some are only required to get the buildkite ci bot pushing fixes to GitHub. The relevant portions are highlighted below.
+The bug seems to occur anytime a fixup commit is pushed to one of renovate's branches by a user marked as `gitIgnoredAuthors`. This can be reproduced using the commands below.
 
-```
-├── .buildkite                        <- Buildkite pipeline config
-│   ...
-│
-├── scripts
-│   └── ci
-│       └── update_pip_lockfiles.sh   <- CI script to update the lockfiles
-├── third_party
-│   ├── BUILD
-│   ├── requirements.in               <- Pinned requirement is here
-│   └── requirements.txt              <- Lockfile is here
-├── .gitignore
-├── renovate.json                     <- Renovate configuration
-├── README.md
-└── WORKSPACE
-```
-
-This repository contains one example package that causes the issue, all others have been removed or disabled. The pull request for this reproduction is [#2](https://github.com/corypaik/renovate-loop/pull/2). There is also a public [Buildkite](https://buildkite.com/corypaik/renovate-loop) available for reference.
-
-If you wish to run this locally, you can run the following command to update the requirements lockfile (requires [Bazel](https://bazel.build/)).
-
-```sh
+```bash
+# clone the repository
 git clone https://github.com/corypaik/renovate-loop.git
 cd renovate-loop
-bazel run //third_party:requirements.update
+
+# checkout renovate's branch.
+git checkout renovate/datasets-1.x
+
+# make any change and commit as a fixup commit.
+touch test.txt
+git commit --fixup HEAD --author buildkite-bot@buildkite.com
+git push
 ```
+
+Renovate will force push that branch the next time it runs, overwriting the user's commits. Note that this may not happen right away as there is only 1 package. When there are multiple it seems to accelerate this issue dramatically as renovate runs more often. You can simulate the behavior by requesting for Renovate to run again on this repository using the [Dependency Dashboard](https://github.com/corypaik/renovate-loop/issues/1)
 
 ## Summary of the Issue
 
