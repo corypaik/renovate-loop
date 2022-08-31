@@ -29,7 +29,7 @@
   "packageRules": [
     {
       "description": "Always pin direct python dependencies to ensure lockfile updates do not revert to a different version.",
-      "matchFiles": ["third_party/requirements.in"],
+      "matchFiles": ["requirements.in"],
       "rangeStrategy": "pin"
     },
     {
