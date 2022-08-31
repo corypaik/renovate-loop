@@ -21,18 +21,20 @@ git commit --fixup HEAD --author 'buildkite[bot] <buildkite-bot@buildkite.com>'
 git push
 ```
 
-Renovate will force push that branch the next time it runs, overwriting the user's commits. Note that this may not happen right away as there is only 1 package. When there are multiple it seems to accelerate this issue dramatically as renovate runs more often. You can simulate the behavior by requesting for Renovate to run again on this repository using the [Dependency Dashboard](https://github.com/corypaik/renovate-loop/issues/1)
+Renovate will force push that branch the next time it runs, overwriting the user's commits. Note that this may not happen right away as there is only 1 package and it does not run when the commit is first pushed. It will overwrite the change on any later run of renovate, whether that is triggered based on a another branch being pushed to, or simply requesting for Renovate to run again on this repository using the [Dependency Dashboard](https://github.com/corypaik/renovate-loop/issues/1).
 
 ### Other test cases
 
-In order to further isolate the issue, I tried a few different tests. Each one performs the same change (adding an empty file). Changing from using a fixup commit message to a different commit message does not change the observed behavior. This seems to mean that renovate overwrites changes by `gitIgnoredAuthors` even when the branch is up to date, regardless of what the change is.
+In order to further isolate the issue, I tried a few different tests. Each one performs the same change (adding an empty file). Changing from using a fixup commit message to a different commit message does not change the observed behavior. This seems to mean that renovate overwrites changes by `gitIgnoredAuthors` even when the branch is up to date, regardless of what the change is. I also found that if `rebaseWhen` is omitted, then we see the expected behavior for `gitIgnoredAuthors`.
 
-| Action                                                       | Expected Outcome         | Current Outcome          |
-| :----------------------------------------------------------- | :----------------------- | :----------------------- |
-| A fixup commit from an author not in `gitIgnoredAuthors`     | Marked as edited/blocked | Marked as edited/blocked |
-| A non-fixup commit from an author not in `gitIgnoredAuthors` | Marked as edited/blocked | Marked as edited/blocked |
-| A fixup commit from an author in `gitIgnoredAuthors`         | No Action                | Overwrites changes       |
-| A non-fixup commit from an author in `gitIgnoredAuthors`     | No Action                | Overwrites changes       |
+| Action                                                                             | Expected Outcome         | Current Outcome          |
+| :--------------------------------------------------------------------------------- | :----------------------- | :----------------------- |
+| A fixup commit from an author not in `gitIgnoredAuthors`                           | Marked as edited/blocked | Marked as edited/blocked |
+| A non-fixup commit from an author not in `gitIgnoredAuthors`                       | Marked as edited/blocked | Marked as edited/blocked |
+| A fixup commit from an author in `gitIgnoredAuthors`                               | No Action                | Overwrites changes       |
+| A non-fixup commit from an author in `gitIgnoredAuthors`                           | No Action                | Overwrites changes       |
+| A fixup commit from an author in `gitIgnoredAuthors` with `rebaseWhen` omitted     | No Action                | No Action                |
+| A non-fixup commit from an author in `gitIgnoredAuthors` with `rebaseWhen` omitted | No Action                | No Action                |
 
 ## Summary of the Issue
 
