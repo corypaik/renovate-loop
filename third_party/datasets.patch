@@ -1,0 +1,153 @@
+From 0e5624ed1e6b37d746b5d72b283180dbdc72c961 Mon Sep 17 00:00:00 2001
+From: Buildkite <buildkite-bot@buildkite.com>
+Date: Wed, 31 Aug 2022 00:36:56 +0000
+Subject: [PATCH] fixup! build: update dependency datasets to v1.18.4
+
+---
+ third_party/gazelle_python.yaml | 35 +++++++++++++++++++++++++++++----
+ third_party/requirements.txt    | 11 +++++++----
+ 2 files changed, 38 insertions(+), 8 deletions(-)
+
+diff --git a/third_party/gazelle_python.yaml b/third_party/gazelle_python.yaml
+index 0abb7c14c..dd2f44c3b 100644
+--- a/third_party/gazelle_python.yaml
++++ b/third_party/gazelle_python.yaml
+@@ -3405,13 +3405,18 @@ manifest:
+     datasets.commands.run_beam: datasets
+     datasets.commands.test: datasets
+     datasets.config: datasets
++    datasets.data_files: datasets
+     datasets.dataset_dict: datasets
+     datasets.features: datasets
++    datasets.features.__init__: datasets
++    datasets.features.audio: datasets
++    datasets.features.features: datasets
++    datasets.features.image: datasets
++    datasets.features.translation: datasets
+     datasets.filesystems: datasets
+     datasets.filesystems.__init__: datasets
+     datasets.filesystems.compression: datasets
+-    datasets.filesystems.compression.__init__: datasets
+-    datasets.filesystems.compression.gzip: datasets
++    datasets.filesystems.hffilesystem: datasets
+     datasets.filesystems.s3filesystem: datasets
+     datasets.fingerprint: datasets
+     datasets.formatting: datasets
+@@ -3420,13 +3425,13 @@ manifest:
+     datasets.formatting.jax_formatter: datasets
+     datasets.formatting.tf_formatter: datasets
+     datasets.formatting.torch_formatter: datasets
+-    datasets.hf_api: datasets
+     datasets.info: datasets
+     datasets.inspect: datasets
+     datasets.io: datasets
+     datasets.io.__init__: datasets
+     datasets.io.abc: datasets
+     datasets.io.csv: datasets
++    datasets.io.handler: datasets
+     datasets.io.json: datasets
+     datasets.io.parquet: datasets
+     datasets.io.text: datasets
+@@ -3461,6 +3466,7 @@ manifest:
+     datasets.tasks.automatic_speech_recognition: datasets
+     datasets.tasks.base: datasets
+     datasets.tasks.image_classification: datasets
++    datasets.tasks.language_modeling: datasets
+     datasets.tasks.question_answering: datasets
+     datasets.tasks.summarization: datasets
+     datasets.tasks.text_classification: datasets
+@@ -6967,12 +6973,16 @@ manifest:
+     httplib2.socks: httplib2
+     huggingface_hub: huggingface_hub
+     huggingface_hub.__init__: huggingface_hub
++    huggingface_hub._commit_api: huggingface_hub
++    huggingface_hub._snapshot_download: huggingface_hub
+     huggingface_hub.commands: huggingface_hub
+     huggingface_hub.commands.__init__: huggingface_hub
+     huggingface_hub.commands.huggingface_cli: huggingface_hub
+     huggingface_hub.commands.lfs: huggingface_hub
+     huggingface_hub.commands.user: huggingface_hub
++    huggingface_hub.community: huggingface_hub
+     huggingface_hub.constants: huggingface_hub
++    huggingface_hub.fastai_utils: huggingface_hub
+     huggingface_hub.file_download: huggingface_hub
+     huggingface_hub.hf_api: huggingface_hub
+     huggingface_hub.hub_mixin: huggingface_hub
+@@ -6980,11 +6990,21 @@ manifest:
+     huggingface_hub.keras_mixin: huggingface_hub
+     huggingface_hub.lfs: huggingface_hub
+     huggingface_hub.repocard: huggingface_hub
++    huggingface_hub.repocard_types: huggingface_hub
+     huggingface_hub.repository: huggingface_hub
+     huggingface_hub.snapshot_download: huggingface_hub
+     huggingface_hub.utils: huggingface_hub
+     huggingface_hub.utils.__init__: huggingface_hub
++    huggingface_hub.utils._datetime: huggingface_hub
++    huggingface_hub.utils._deprecation: huggingface_hub
++    huggingface_hub.utils._errors: huggingface_hub
++    huggingface_hub.utils._fixes: huggingface_hub
++    huggingface_hub.utils._paths: huggingface_hub
++    huggingface_hub.utils._subprocess: huggingface_hub
++    huggingface_hub.utils.endpoint_helpers: huggingface_hub
+     huggingface_hub.utils.logging: huggingface_hub
++    huggingface_hub.utils.sha: huggingface_hub
++    huggingface_hub.utils.tqdm: huggingface_hub
+     icecream: icecream
+     icecream.__init__: icecream
+     icecream.__version__: icecream
+@@ -29966,6 +29986,13 @@ manifest:
+     requests_oauthlib.oauth1_session: requests_oauthlib
+     requests_oauthlib.oauth2_auth: requests_oauthlib
+     requests_oauthlib.oauth2_session: requests_oauthlib
++    responses: responses
++    responses.__init__: responses
++    responses.matchers: responses
++    responses.registries: responses
++    responses.test_matchers: responses
++    responses.test_registries: responses
++    responses.test_responses: responses
+     reverb: dm_reverb
+     reverb.__init__: dm_reverb
+     reverb.cc: dm_reverb
+@@ -45958,4 +45985,4 @@ manifest:
+   pip_repository:
+     name: pip
+     incremental: true
+-integrity: 5e954014790e3223e4647591c77d0badf53a27815bde4a91f2bce059f4c44de9
++integrity: 51e533977c8bbbf4feddf6c5c365c37676582391a882c9086b06450a703d8d28
+diff --git a/third_party/requirements.txt b/third_party/requirements.txt
+index b06885547..48cb8ab8f 100644
+--- a/third_party/requirements.txt
++++ b/third_party/requirements.txt
+@@ -519,7 +519,7 @@ frozenlist==1.3.0 \
+     --hash=sha256:f7353ba3367473d1d616ee727945f439e027f0bb16ac1a750219a8344d1d5d3c \
+     --hash=sha256:f96293d6f982c58ebebb428c50163d010c2f05de0cde99fd681bfdc18d4b2dc2 \
+     --hash=sha256:ff9310f05b9d9c5c4dd472983dc956901ee6cb2c3ec1ab116ecdde25f3ce4951
+-fsspec==2021.11.1 \
++fsspec[http]==2021.11.1 \
+     --hash=sha256:03683e606651d5e4bd9180525d57477bd5430e5dc68d2e459835dc14cecc3dd4 \
+     --hash=sha256:bcb136caa37e1470dd8314a7d3917cb9b25dd9da44c10d36df556ab4ef038185
+ ftfy==6.1.1 \
+@@ -804,9 +804,9 @@ hdfs==2.7.0 \
+ httplib2==0.19.1 \
+     --hash=sha256:0b12617eeca7433d4c396a100eaecfa4b08ee99aa881e6df6e257a7aad5d533d \
+     --hash=sha256:2ad195faf9faf079723f6714926e9a9061f694d07724b846658ce08d40f522b4
+-huggingface-hub==0.0.19 \
+-    --hash=sha256:6ea6fff78b692fc9b05e0315c2d7d835a6f42902e472eadeceebff12babd6c06 \
+-    --hash=sha256:edcea87cbd709073a63fc911efa2d8fd8304f62cfe43f0bf497dec8eaac10369
++huggingface-hub==0.9.1 \
++    --hash=sha256:6395f26aaf44bbb4a73d3e14aca228fa39534696f651c6c82a6347f8c9f5950b \
++    --hash=sha256:7a588046bdeb84e7bc99b3da58bbb4312a56d94ba51ebc60dfe610c18b3d0b9f
+ icecream==2.1.2 \
+     --hash=sha256:04b9cea4d9931cf6960db0430ebf11fa34464ce7152e384ddf50f96d25b201b4 \
+     --hash=sha256:09300b2d1c678712410cbd47c95198eb1b580f66f311a554ccd6b9e758ece0ee
+@@ -1962,6 +1962,9 @@ requests==2.27.1 \
+ requests-oauthlib==1.3.1 \
+     --hash=sha256:2577c501a2fb8d05a304c09d090d6e47c306fef15809d102b327cf8364bddab5 \
+     --hash=sha256:75beac4a47881eeb94d5ea5d6ad31ef88856affe2332b9aafb52c6452ccf0d7a
++responses==0.18.0 \
++    --hash=sha256:15c63ad16de13ee8e7182d99c9334f64fd81f1ee79f90748d527c28f7ca9dd51 \
++    --hash=sha256:380cad4c1c1dc942e5e8a8eaae0b4d4edf708f4f010db8b7bcfafad1fcd254ff
+ rlax @ https://github.com/deepmind/rlax/archive/66ea2d68a083933a3fb3f76a4e0935339005e1aa.tar.gz \
+     --hash=sha256:7b9055e73531c5138f25cee3f36f109300b6b34677065d2c57b547bbf622a213
+ rlds==0.1.4 \
