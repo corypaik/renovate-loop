@@ -16,6 +16,7 @@ git checkout renovate/datasets-1.x
 
 # make any change and commit as a fixup commit.
 touch test.txt
+git add test.txt
 git commit --fixup HEAD --author buildkite-bot@buildkite.com
 git push
 ```
