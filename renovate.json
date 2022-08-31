@@ -1,44 +1,8 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    ":ignoreModulesAndTests",
-    "group:monorepos",
-    "group:recommended",
-    "workarounds:all"
-  ],
-  "semanticCommits": "enabled",
-  "semanticCommitType": "build",
-  "semanticCommitScope": "",
-  "prHourlyLimit": 2,
-  "prConcurrentLimit": 10,
   "dependencyDashboard": true,
-  "labels": ["target: minor", "comp: build & ci", "action: review"],
-  "timezone": "America/Chihuahua",
-  "schedule": ["after 10pm every weekday", "before 4am every weekday"],
   "baseBranches": ["main"],
   "rebaseWhen": "behind-base-branch",
-  "pip_requirements": {
-    "fileMatch": [".*requirements.in$"]
-  },
   "prCreation": "not-pending",
-  "stabilityDays": 3,
-  "gitIgnoredAuthors": ["buildkite-bot@buildkite.com"],
-  "pre-commit": {
-    "enabled": true
-  },
-  "packageRules": [
-    {
-      "description": "Always pin direct python dependencies to ensure lockfile updates do not revert to a different version.",
-      "matchFiles": ["requirements.in"],
-      "rangeStrategy": "pin"
-    },
-    {
-      "description": "All python deps, except datasets (for minimal reproduction).",
-      "matchPackagePatterns": ["*"],
-      "matchUpdateTypes": ["major", "minor", "patch"],
-      "matchLanguages": ["python"],
-      "excludePackageNames": ["datasets"],
-      "enabled": false
-    }
-  ]
+  "gitIgnoredAuthors": ["buildkite-bot@buildkite.com"]
 }
