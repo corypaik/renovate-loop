@@ -1,4 +1,3 @@
 steps:
   - label: ":bazel: Update pip lockfiles"
     command: ./scripts/ci/update_pip_lockfiles.sh
-    if: 'build.author.email=="29139614+renovate[bot]@users.noreply.github.com"'
