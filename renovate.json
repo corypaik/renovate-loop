@@ -1,8 +1,5 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "dependencyDashboard": true,
-  "baseBranches": ["main"],
-  "rebaseWhen": "behind-base-branch",
-  "prCreation": "not-pending",
   "gitIgnoredAuthors": ["buildkite-bot@buildkite.com"]
 }
