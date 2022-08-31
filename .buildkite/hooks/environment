@@ -1,0 +1,23 @@
+#!/bin/sh
+
+get_dir_checksum() {
+  echo "$1" | shasum | awk '{print $1}'
+}
+
+get_bazel_startup_options() {
+
+  # The cache location must not depend on the host.
+  # The name=%hostname-%spawn
+  agent_spawn=$(echo "$BUILDKITE_AGENT_NAME" |
+    sed 's/^.*-\([[:digit:]]\+\)$/\1/')
+
+  # Reconstuct using only spawn and the repo name.
+  workspace_path="$agent_spawn/$BUILDKITE_PROJECT_SLUG"
+
+  # Create a hash of the path and add to bazel cache.
+  output_base="$HOME/.cache/bazel/_bazel_$USER/$(get_dir_checksum $workspace_path)"
+
+  echo "--output_base=$output_base"
+}
+
+BAZEL_STARTUP_OPTIONS=$(get_bazel_startup_options)

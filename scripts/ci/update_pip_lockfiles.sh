@@ -2,9 +2,27 @@
 
 set -eux
 
-# Usually this checks for files that need to be updated and then updates them.
-# For this reproduction, it is just applying the patch that makes those changes.
-git apply third_party/datasets.patch
+BAZEL_STARTUP_OPTIONS="${BAZEL_STARTUP_OPTIONS:-}"
+
+# Get pip_compile labels in the order they should be ran.
+get_pip_compile_labels() {
+  bazel $BAZEL_STARTUP_OPTIONS query --output=label --order_output=full \
+    'kind(py_binary, attr("main", "@rules_python//python/pip_install:pip_compile.py", //...))' |
+    tac
+}
+
+BAZEL_PC_LABELS="$(get_pip_compile_labels)"
+
+# Build all of them
+# shellcheck disable=SC2086
+bazel $BAZEL_STARTUP_OPTIONS build $BAZEL_PC_LABELS
+
+# Run them in order
+for label in $BAZEL_PC_LABELS; do
+  bazel $BAZEL_STARTUP_OPTIONS run "$label"
+done
+
+# [REMOVED] Update for gazelle manifests.
 
 # If there were any changes commit them and exit with an error.
 if [ "$(git diff --stat)" != '' ]; then
